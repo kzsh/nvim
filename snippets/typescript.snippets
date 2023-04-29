@@ -1,0 +1,14 @@
+snippet log
+	const log = <T>(a:T) => (console.log(a), a)
+
+
+snippet countKeys
+	console.log(data.map((d) => d.id).reduce((accum, key) => {
+	  if (typeof accum[key] === 'number') {
+	    accum[key] += 1;
+	  } else {
+	    accum[key] = 1;
+	  }
+	  return accum;
+	}, {}));
+
