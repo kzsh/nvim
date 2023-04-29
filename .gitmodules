@@ -1,3 +1,0 @@
-[submodule "themes/vim-monokai"]
-	path = themes/vim-monokai
-	url = https://github.com/crusoexia/vim-monokai.git
