@@ -4,16 +4,16 @@ vim.cmd([[
 "==========================================================
 
 function! RustExecute()
-  let l:in_file_path = g:kzsh#query_result_dir . '/rust/in/' . expand('%:t:r') . '.rs'
-  let l:in_file_executable = g:kzsh#query_result_dir . '/rust/in/' . expand('%:t:r')
-  let l:out_file_path = g:kzsh#query_result_dir . '/rust/out/' . expand('%:t:r') . '.log'
+  let l:in_file_path = g:kzsh.query_result_dir . '/rust/in/' . expand('%:t:r') . '.rs'
+  let l:in_file_executable = g:kzsh.query_result_dir . '/rust/in/' . expand('%:t:r')
+  let l:out_file_path = g:kzsh.query_result_dir . '/rust/out/' . expand('%:t:r') . '.log'
 
   execute('%w! ' . l:in_file_path . ' | !rustc ' . l:in_file_path . ' -o ' . l:in_file_executable)
   execute('!' . l:in_file_executable . ' > ' . l:out_file_path)
 endfunction
 
 function! RustViewExecution()
-  let l:out_file_path = g:kzsh#query_result_dir . '/rust/out/' . expand('%:t:r') . '.log'
+  let l:out_file_path = g:kzsh.query_result_dir . '/rust/out/' . expand('%:t:r') . '.log'
   execute('silent! vsplit ' . l:out_file_path)
 endfunction
 
@@ -25,14 +25,14 @@ command! RustViewExecution call s:RustViewExecution()
 "==========================================================
 
 function! MongodbQuery()
-  let l:in_file_path = g:kzsh#query_result_dir . '/mongodb/in/' . expand('%:t:r') . '.js'
-  let l:out_file_path = g:kzsh#query_result_dir . '/mongodb/out/' . expand('%:t:r')
+  let l:in_file_path = g:kzsh.query_result_dir . '/mongodb/in/' . expand('%:t:r') . '.js'
+  let l:out_file_path = g:kzsh.query_result_dir . '/mongodb/out/' . expand('%:t:r')
 
   execute('%w! ' . l:in_file_path . ' | !cat ' . l:in_file_path . ' | mongosh --norc --quiet | sed "s/^rs.*>//g;/^ *$/d" > ' . l:out_file_path)
 endfunction
 
 function! MongodbViewQuery()
-  let l:out_file_path = g:kzsh#query_result_dir . '/mongodb/out/' . expand('%:t:r')
+  let l:out_file_path = g:kzsh.query_result_dir . '/mongodb/out/' . expand('%:t:r')
   execute('silent! vsplit ' . l:out_file_path)
 endfunction
 
