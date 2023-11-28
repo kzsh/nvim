@@ -1,10 +1,12 @@
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
+local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+local workspace_dir = '/home/andrew/.local/share/nvim/custom/lsp_servers/jdtls/data' .. '/' .. project_name
 local config = {
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-    -- 💀
-    'java',
+    -- 💀 (Some of our projects use older versions of java, so we have to hard code the path here.)
+    '/usr/lib/jvm/java-19-openjdk-amd64/bin/java',
     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
     '-Dosgi.bundles.defaultStartLevel=4',
     '-Declipse.product=org.eclipse.jdt.ls.core.product',
@@ -18,7 +20,7 @@ local config = {
     -- 💀
     '-jar', '/home/andrew/.local/share/nvim/lsp_servers/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
     '-configuration', '/home/andrew/.local/share/nvim/lsp_servers/jdtls/config_linux',
-    '-data', '/home/andrew/.local/share/nvim/custom/lsp_servers/jdtls/data'
+    '-data', workspace_dir,
   },
 
   -- 💀
