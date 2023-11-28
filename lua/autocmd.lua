@@ -13,7 +13,9 @@ autocmd BufRead,BufNewFile coc-settings.json  setlocal filetype=jsonc
 autocmd BufRead,BufNewFile tsconfig.json      setlocal filetype=jsonc
 autocmd BufRead,BufNewFile *.kt               setlocal filetype=kotlin
 autocmd BufRead,BufNewFile *.kt               setlocal filetype=kotlin
-autocmd BufRead,BufNewFile *.mkd,*.markdown,*.mdwn,*.md,*.MD,*.Markdown,*.MarkDown   set filetype=markdown
+autocmd BufRead,BufNewFile *.markdown         setlocal filetype=markdown
+autocmd BufRead,BufNewFile *.md               setlocal filetype=markdown
+autocmd BufRead,BufNewFile *.mkd              setlocal filetype=markdown
 autocmd BufRead,BufNewFile *.jbuilder         setlocal filetype=ruby
 autocmd BufRead,BufNewFile Podfile*           setlocal filetype=ruby
 autocmd BufRead,BufNewFile Vagrantfile*       setlocal filetype=ruby
@@ -35,6 +37,7 @@ autocmd BufRead,BufNewFile *sxhkdrc           setlocal filetype=sxhkdrc
 autocmd BufRead,BufNewFile *.cypher           setlocal filetype=cypher
 autocmd BufRead,BufNewFile rules              setlocal filetype=make
 autocmd BufRead,BufNewFile .swcrc             setlocal filetype=json
+autocmd BufRead,BufNewFile *.yml.template     setlocal filetype=yaml
 
 " set Tabs per file-type.  (current unused, see above)
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
@@ -54,7 +57,7 @@ autocmd Filetype swift setlocal ts=2 sts=2 sw=2
 autocmd Filetype applescript setlocal ts=4 sts=4 sw=4 noexpandtab syntax=ON
 autocmd Filetype groovy setlocal ts=4 sts=4 sw=4 syntax=ON
 autocmd Filetype kotlin setlocal ts=4 sts=4 sw=4
-autocmd Filetype markdown setlocal conceallevel=2 spell
+autocmd Filetype markdown setlocal conceallevel=0 spell
 autocmd Filetype json setlocal conceallevel=0
 autocmd Filetype gitconfig setlocal ts=2 sts=2 sw=2 noexpandtab syntax=ON
 autocmd Filetype fugitiveblame setlocal syntax=ON
@@ -72,6 +75,7 @@ autocmd Filetype xf86conf setlocal syntax=ON
 autocmd Filetype cypher setlocal syntax=ON commentstring=//\ %s
 autocmd Filetype checkhealth setlocal syntax=ON
 autocmd Filetype diff setlocal syntax=ON
+autocmd Filetype csv setlocal syntax=ON
 
 
 autocmd FileType json syntax match Comment +\/\/.\+$+
