@@ -758,9 +758,28 @@ return {
     'iamcco/diagnostic-languageserver',
   }
 },
-'dense-analysis/neural',
-  'muniftanjim/nui.nvim',
-  'elpiloto/significant.nvim',
+{
+  'dense-analysis/neural',
+  event = 'VeryLazy',
+  cmd = 'Neural',
+  config = function()
+    require('neural').setup({
+      selected = 'chatgpt',
+      source = {
+        openai = {
+          api_key = vim.env.OPENAI_API_KEY,
+        },
+        chatgpt = {
+          api_key = vim.env.OPENAI_API_KEY,
+        },
+      },
+    })
+  end,
+  dependencies = {
+    'muniftanjim/nui.nvim',
+    'elpiloto/significant.nvim',
+  }
+},
 
 {
     "folke/tokyonight.nvim",
