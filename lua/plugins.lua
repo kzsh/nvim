@@ -567,6 +567,7 @@ return {
 },
 {
   'plasticboy/vim-markdown',
+  enabled = false,
   ft = {'markdown'},
   config = function()
 
@@ -574,7 +575,9 @@ return {
       "==========================================================
       " vim Markdown
       "==========================================================
-      let g:markdown_fenced_languages = ['html', 'ruby', 'js=javascript', 'python', 'bash=sh', 'graphql', 'ts=typescript']
+      let g:markdown_fenced_languages = ['html', 'ruby', 'js=javascript', 'python', 'bash=sh', 'graphql', 'ts=typescript', 'sql', 'cypher']
+      " let g:vim_markdown_conceal = 0
+      let g:vim_markdown_conceal_code_blocks = 0
     ]])
   end
 },
