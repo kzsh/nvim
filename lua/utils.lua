@@ -55,12 +55,7 @@ function! VisualSelection()
   return join(l:lines, "\n")
 endfunction
 
-function! GetVisualSelection(separator)
-    let l:sep = "\n"
-    if (a:separator)
-      let l:sep = a:separator
-    endif
-
+function! GetVisualSelection(separator = "\n")
     " Why is this not a built-in Vim script function?!
     let [line_start, column_start] = getpos("'<")[1:2]
     let [line_end, column_end] = getpos("'>")[1:2]
@@ -70,7 +65,7 @@ function! GetVisualSelection(separator)
     endif
     let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
     let lines[0] = lines[0][column_start - 1:]
-    return join(lines, ' ')
+    return lines
 endfunction
 
 ]])
