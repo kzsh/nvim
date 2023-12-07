@@ -787,6 +787,7 @@ return {
       require("mason").setup()
       require("mason-lspconfig").setup()
     end,
+    priority = 900, -- make sure to load this before all the other start plugins
     build = ":MasonUpdate", -- :MasonUpdate updates registry contents
     dependencies = {
       "williamboman/mason-lspconfig.nvim",
