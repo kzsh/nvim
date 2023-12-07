@@ -1,3 +1,10 @@
+snippet debug
+	const log = <T>(a:T) => {
+	  console.log(a);
+	  debugger;
+	  return a
+	}
+
 snippet log
 	const log = <T>(a:T) => (console.log(a), a)
 
