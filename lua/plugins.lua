@@ -792,13 +792,13 @@ return {
       "williamboman/mason-lspconfig.nvim",
     }
   },
-  'kyazdani42/nvim-web-devicons',
+  -- 'kyazdani42/nvim-web-devicons',
   {
     'pwntester/octo.nvim',
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope.nvim',
-      'kyazdani42/nvim-web-devicons',
+      -- 'kyazdani42/nvim-web-devicons',
     },
     init = function()
       require"octo".setup({
@@ -832,7 +832,7 @@ return {
         },
         file_panel = {
           size = 10,                             -- changed files panel rows
-          use_icons = true                       -- use web-devicons in file panel (if false, nvim-web-devicons does not need to be installed)
+          use_icons = false                       -- use web-devicons in file panel (if false, nvim-web-devicons does not need to be installed)
         },
         mappings = {
         -- issue = {
