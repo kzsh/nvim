@@ -38,6 +38,7 @@ autocmd BufRead,BufNewFile *.cypher           setlocal filetype=cypher
 autocmd BufRead,BufNewFile rules              setlocal filetype=make
 autocmd BufRead,BufNewFile .swcrc             setlocal filetype=json
 autocmd BufRead,BufNewFile *.yml.template     setlocal filetype=yaml
+autocmd BufRead,BufNewFile .xinitrc           setlocal filetype=sh
 
 " set Tabs per file-type.  (current unused, see above)
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
