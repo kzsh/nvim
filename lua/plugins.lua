@@ -37,7 +37,11 @@ return {
 --  end,
 --  event = 'VeryLazy',
 -- },
-{ 'romainl/vim-cool', event = 'VeryLazy' },
+{
+  'romainl/vim-cool',
+  enabled = false,
+  event = 'VeryLazy'
+},
 { 'wellle/targets.vim', event = 'VeryLazy' },
 {
   'nvim-telescope/telescope.nvim',
