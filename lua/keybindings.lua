@@ -70,4 +70,9 @@ endfunction
 " Open quickfix window
 "==========================================================
 nnoremap <Leader>fq :copen \| silent grep!<Space>
+
+"==========================================================
+" Restart LSP
+"==========================================================
+nnoremap <Leader><Leader>r :LspRestart<CR>
 ]])
