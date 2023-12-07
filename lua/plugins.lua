@@ -258,8 +258,8 @@ return {
 'teal-language/vim-teal',
 {
   'b0o/incline.nvim',
-  config = {
-  hide = {
+  opts = {
+    hide = {
       cursorline = true,
       focused_win = false,
       only_win = false
