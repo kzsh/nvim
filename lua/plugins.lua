@@ -230,16 +230,22 @@ return {
 {
   -- Generalized text aligner
   'junegunn/vim-easy-align',
-  config = function()
+  init = function()
     vim.cmd([[
     "==========================================================
     " EasyAlign config
     "==========================================================
     augroup TableFormatting
       au FileType markdown vmap <Leader><Bar> :EasyAlign*<Bar><Enter>
+      " Start interactive EasyAlign in visual mode (e.g. vipga)
+      xmap ga <Plug>(EasyAlign)
+
+      " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+      nmap ga <Plug>(EasyAlign)
     augroup END
     ]])
-  end
+  end,
+  event = 'VeryLazy',
 },
 
 -- Display marks in gutter (does more, but I don't use that)
