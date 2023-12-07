@@ -110,6 +110,9 @@ return {
     init = function()
       local cmp = require('cmp')
       cmp.setup({
+        confirmation = {
+          completeopt = 'longest,menuone,preview'
+        },
         mapping = cmp.mapping.preset.insert({
           ["<CR>"] = cmp.config.disable,
           ["<C-p>"] = cmp.mapping.select_prev_item(),
