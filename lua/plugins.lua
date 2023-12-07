@@ -800,6 +800,27 @@ return {
     end,
   },
   {
+  'Tsuzat/NeoSolarized.nvim',
+    enabled = false,
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      -- load the colorscheme here
+      vim.cmd([[
+      colorscheme NeoSolarized
+      highlight OctoEditable guibg=#1a1a26
+      highlight OctoGreyFloat guifg=#2a354c guibg=#1a1a26
+      highlight OctoBlueFloat guifg=#58a6ff guibg=#1a1a26
+      highlight OctoYellowFloat guifg=#d3c846 guibg=#1a1a26
+      highlight OctoPurpleFloat guifg=#6f42c1 guibg=#1a1a26
+      highlight OctoRedFloat guifg=#da3633 guibg=#1a1a26
+      highlight OctoGreenFloat guifg=#238636 guibg=#1a1a26
+      " let g:neosolarized_contrast = "normal"
+      " let g:neosolarized_visibility = "normal"
+      ]])
+    end,
+  },
+  {
   'morhetz/gruvbox',
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     enabled = true,
@@ -807,6 +828,16 @@ return {
     config = function()
       -- load the colorscheme here
       vim.cmd([[colorscheme gruvbox]])
+    end,
+  },
+  {
+    'NLKNguyen/papercolor-theme',
+    enabled = false,
+    lazy = false, -- make sure we load this during startup if it is your main colorscheme
+    priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      -- load the colorscheme here
+      vim.cmd([[colorscheme PaperColor ]])
     end,
   },
   {
