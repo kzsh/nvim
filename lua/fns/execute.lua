@@ -42,25 +42,32 @@ command! MongodbViewQuery call s:MongodbViewQuery()
 "==========================================================
 " Neo4j Execute visual-selection
 "==========================================================
-function! Neo4jQuery(is_inline)
-  if(a:is_inline != 0)
-    let l:out_file_path = g:kzsh#query_result_dir . '/cypher/out/' . expand('%:t:r')
-    execute('!~/bin/neo "' . GetVisualSelection("a") . '" | jq > ' . l:out_file_path)
+let g:Neo4jQuery_database = "some_db"
+function! Neo4jQuery(is_inline) range
+  let l:out_file_path = g:kzsh.query_result_dir . '/cypher/out/' . expand('%:t:r') . '.cypher'
+  let l:in_file_path = g:kzsh.query_result_dir . '/cypher/in/' . expand('%:t:r') . '.cypher'
+  if(a:is_inline == 2)
+    execute('%w! ' . l:in_file_path . ' | !cypher-shell --database ' . g:Neo4jQuery_database . ' --user neo4j --password changeme --non-interactive --format plain --file ' . l:in_file_path . ' > ' . l:out_file_path)
+  elseif(a:is_inline == 1)
+    let l:visual = GetVisualSelection()
+    call writefile(l:visual, l:in_file_path, 'b')
+    echom l:in_file_path
+    execute('!cat ' . l:in_file_path . ' | cypher-shell --database ' . g:Neo4jQuery_database . ' --user neo4j --password changeme --non-interactive --format plain --file ' . l:in_file_path . ' > ' . l:out_file_path)
+  elseif(a:is_inline == 0)
+    call writefile(split(getline('.'), "\n"), l:in_file_path, 'b')
+    echom split(getline('.'), "\n")
+    " execute('!cat ' . l:in_file_path)
+    execute('!cat ' . l:in_file_path . ' | cypher-shell --database ' . g:Neo4jQuery_database . ' --user neo4j --password changeme --non-interactive --format plain --file ' . l:in_file_path . ' > ' . l:out_file_path)
   else
-    let l:in_file_path = g:kzsh#query_result_dir . '/cypher/in/' . expand('%:t:r') . '.cypher'
-    let l:out_file_path = g:kzsh#query_result_dir . '/cypher/out/' . expand('%:t:r')
-    " execute('%w! ' . l:in_file_path . ' | !~/bin/neo -f ' . l:in_file_path . ' | jq -r > ' . l:out_file_path)
-    execute('%w! ' . l:in_file_path . ' | !cypher-shell --database [some-deb-here] --user neo4j --password changeme --non-interactive --file ' . l:in_file_path . ' > ' . l:out_file_path)
+    echom "no valid approach selected"
   endif
 endfunction
 
 function! Neo4jViewQuery()
-  let l:out_file_path = g:kzsh#query_result_dir . '/cypher/out/' . expand('%:t:r')
+  let l:out_file_path = g:kzsh.query_result_dir . '/cypher/out/' . expand('%:t:r') . '.cypher'
   execute('silent! vsplit ' . l:out_file_path)
 endfunction
 
-command! Neo4jdbQuery call s:Neo4jQuery()
-command! Neo4jdbViewQuery call s:Neo4jViewQuery()
 "==========================================================
 " PostgreSQL Execute visual-selection
 "==========================================================
@@ -110,6 +117,7 @@ augroup ExecuteSelectedTextByFileType
   autocmd FileType cypher nnoremap <buffer> <Leader>ro :call Neo4jViewQuery()<CR>
   autocmd FileType cypher nnoremap <buffer> <Leader>rr :call Neo4jQuery(0)<CR>
   autocmd FileType cypher vnoremap <buffer> <Leader>rr :call Neo4jQuery(1)<CR>
+  autocmd FileType cypher nnoremap <buffer> <Leader>ra :call Neo4jQuery(2)<CR>
 
   autocmd FileType sql nnoremap <buffer> <Leader>ro :call PostgreSQLViewQuery()<CR>
   autocmd FileType sql nnoremap <buffer> <Leader>rr :call PostgreSQLQuery(0)<CR>
