@@ -61,6 +61,34 @@ endfunction
 
 command! Neo4jdbQuery call s:Neo4jQuery()
 command! Neo4jdbViewQuery call s:Neo4jViewQuery()
+"==========================================================
+" PostgreSQL Execute visual-selection
+"==========================================================
+let g:PostgreSQLQuery_database = "db-name"
+function! PostgreSQLQuery(is_inline) range
+  let l:out_file_path = g:kzsh.query_result_dir . '/psql/out/' . expand('%:t:r') . '.sql'
+  let l:in_file_path = g:kzsh.query_result_dir . '/psql/in/' . expand('%:t:r') . '.sql'
+  if(a:is_inline == 2)
+    execute('%w! ' . l:in_file_path . ' | ! PGPASSWORD=postgres psql --host localhost --port 5432 --username=postgres --dbname=' . g:PostgreSQLQuery_database . ' --file ' . l:in_file_path . ' > ' . l:out_file_path)
+  elseif(a:is_inline == 1)
+    let l:visual = GetVisualSelection()
+    call writefile(l:visual, l:in_file_path, 'b')
+    echom l:in_file_path
+    execute('!cat ' . l:in_file_path . ' | PGPASSWORD=postgres psql --host localhost --port 5432 --username=postgres --dbname=' . g:PostgreSQLQuery_database . ' > ' . l:out_file_path)
+  elseif(a:is_inline == 0)
+    call writefile(split(getline('.'), "\n"), l:in_file_path, 'b')
+    echom split(getline('.'), "\n")
+    " execute('!cat ' . l:in_file_path)
+    execute('!cat ' . l:in_file_path . ' | PGPASSWORD=postgres psql --host localhost --port 5432 --username=postgres --dbname=' . g:PostgreSQLQuery_database . ' > ' . l:out_file_path)
+  else
+    echom "no valid approach selected"
+  endif
+endfunction
+
+function! PostgreSQLViewQuery()
+  let l:out_file_path = g:kzsh.query_result_dir . '/psql/out/' . expand('%:t:r') . '.sql'
+  execute('silent! vsplit ' . l:out_file_path)
+endfunction
 
 
 augroup ExecuteSelectedTextByFileType
@@ -76,13 +104,17 @@ augroup ExecuteSelectedTextByFileType
 
   autocmd FileType rust nnoremap <buffer> <Leader>ro :call RustViewExecution()<CR>
   autocmd FileType rust nnoremap <buffer> <Leader>rr :call RustExecute()<CR>
-
   autocmd FileType rust vnoremap <buffer> <Leader>ro :call RustViewExecution()<CR>
   autocmd FileType rust vnoremap <buffer> <Leader>rr :call RustExecute()<CR>
 
   autocmd FileType cypher nnoremap <buffer> <Leader>ro :call Neo4jViewQuery()<CR>
   autocmd FileType cypher nnoremap <buffer> <Leader>rr :call Neo4jQuery(0)<CR>
   autocmd FileType cypher vnoremap <buffer> <Leader>rr :call Neo4jQuery(1)<CR>
+
+  autocmd FileType sql nnoremap <buffer> <Leader>ro :call PostgreSQLViewQuery()<CR>
+  autocmd FileType sql nnoremap <buffer> <Leader>rr :call PostgreSQLQuery(0)<CR>
+  autocmd FileType sql vnoremap <buffer> <Leader>rr :call PostgreSQLQuery(1)<CR>
+  autocmd FileType sql nnoremap <buffer> <Leader>ra :call PostgreSQLQuery(2)<CR>
 
 augroup END
 ]])
