@@ -48,7 +48,8 @@ return {
     'nvim-telescope/telescope-ui-select.nvim',
   },
     init = function()
-      require('telescope').setup{
+      local telescope = require('telescope')
+      telescope.setup({
         defaults = {
           layout_strategy = 'vertical',
           layout_config = {
@@ -56,8 +57,18 @@ return {
             width = 0.99,
             height = 0.999999,
           },
-        }
-      }
+        },
+        extensions = {
+          fzf = {
+            -- fuzzy = true,                    -- false will only do exact matching
+            -- override_generic_sorter = true,  -- override the generic sorter
+            -- override_file_sorter = true,     -- override the file sorter
+            case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+          }
+        },
+      })
+      telescope.load_extension('fzf')
 
       local cwd = function () return vim.fn.expand('%:p:h') end
       local git_root_dir = function ()
@@ -76,6 +87,10 @@ return {
       vim.keymap.set('n', '<leader>;h', builtin.help_tags, {})
     end,
     cmd = 'Telescope',
+},
+{
+  'nvim-telescope/telescope-fzf-native.nvim',
+  build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
 },
 {
     'hrsh7th/nvim-cmp',
