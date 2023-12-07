@@ -948,5 +948,15 @@ return {
         }
       })
     end,
+  },
+  {
+    'Shatur/neovim-tasks',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-dap',
+    }
+  }, {
+    'chrisbra/csv.vim',
+     event = "BufRead",
   }
 }
