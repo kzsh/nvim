@@ -99,23 +99,26 @@ return {
 {
     'hrsh7th/nvim-cmp',
     dependencies = {
+      'dcampos/cmp-snippy',
+      'doxnit/cmp-luasnip-choice',
       'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-nvim-lsp',
---       'onsails/lspkind.nvim',
+      'hrsh7th/cmp-nvim-lsp-document-symbol',
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      'hrsh7th/cmp-path',
       'hrsh7th/cmp-nvim-lua',
-      'lukas-reineke/cmp-under-comparator',
---       'dcampos/cmp-snippy',
---       'hrsh7th/cmp-cmdline',
---       'hrsh7th/cmp-nvim-lsp-document-symbol',
---       'doxnit/cmp-luasnip-choice',
+      'hrsh7th/cmp-path',
+      'hrsh7th/vim-vsnip',
+      -- 'lukas-reineke/cmp-under-comparator',
+      -- 'onsails/lspkind.nvim',
     },
     init = function()
       local cmp = require('cmp')
       cmp.setup({
+        -- ignore LSP attempts to make a selection in advance of the user
+        preselect = cmp.PreselectMode.None,
         confirmation = {
-          completeopt = 'longest,menuone,preview'
+         completeopt = 'longest,menuone,preview,noselect'
         },
         mapping = cmp.mapping.preset.insert({
           ["<CR>"] = cmp.config.disable,
@@ -124,17 +127,42 @@ return {
           ["<C-e>"] = cmp.mapping.abort(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
+          -- ['<C-Space>'] = cmp.mapping.complete(),
+          -- ['<C-e>'] = cmp.mapping.abort(),
           -- ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'nvim_lsp_signature_help' },
-          { name = 'buffer' },
-          { name = 'nvim_lua' },
           { name = 'under_comparator' },
-          { name = 'path' },
+          { name = 'nvim_lsp', keyword_length = 2 },      -- from language server
+          { name = 'nvim_lsp_signature_help'},            -- display function signatures with current parameter emphasized
+          { name = 'path' },                              -- file paths
+          { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
+          { name = 'buffer', keyword_length = 2 },        -- source current buffer
+          { name = 'calc'},
+        }),
+        -- window = {
+        --   completion = cmp.config.window.bordered(),
+        --   documentation = cmp.config.window.bordered(),
+        -- },
+      })
+
+      cmp.setup.cmdline('/', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' }
+        }
+      })
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+          {
+            name = 'cmdline',
+            option = {
+              ignore_cmds = { 'Man', '!' }
+            }
+          }
         })
       })
     end,
