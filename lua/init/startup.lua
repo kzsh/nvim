@@ -52,7 +52,7 @@ vim.opt.shiftround = true
 -- vim.opt.wildmenu=longest:full,full
 vim.opt.wildignore = "*.git,*.hg,*.svn,*/tmp/*,*.so,*.swp,*.zip"
 vim.opt.complete = ".,w,b,u,t,i"
-vim.opt.completeopt = "longest,menuone,preview"
+vim.opt.completeopt = "longest,menuone,preview,noselect"
 
 vim.opt.undofile = true
 vim.opt.undolevels=1000
