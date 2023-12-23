@@ -231,33 +231,7 @@ return {
 -- Distraction-free vim config -- often used in presentation
 {
   'junegunn/goyo.vim',
-  config = function()
-    vim.cmd([[
-      "==========================================================
-      " Goyo Config
-      "==========================================================
-
-      function! s:goyo_leave()
-        set background=dark
-        colorscheme gruvbox
-
-        nmap <S-L> gt
-        nmap <S-H> g<S-t>
-      endfunction
-
-      function! s:goyo_enter()
-        nmap <S-L> :bn<CR>
-        nmap <S-H> :bp<CR>
-
-      endfunction
-
-      autocmd! User GoyoEnter nested call goyo_enter()
-      autocmd! User GoyoLeave nested call goyo_leave()
-
-      nnoremap <Leader>go :Goyo<CR>
-
-    ]])
-  end
+  cmd = 'Goyo',
 },
 {
   -- Generalized text aligner
