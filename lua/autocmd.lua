@@ -77,6 +77,7 @@ autocmd Filetype cypher setlocal syntax=ON commentstring=//\ %s
 autocmd Filetype checkhealth setlocal syntax=ON
 autocmd Filetype diff setlocal syntax=ON
 autocmd Filetype csv setlocal syntax=ON
+autocmd Filetype svelte setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 
 autocmd FileType json syntax match Comment +\/\/.\+$+
