@@ -8,6 +8,7 @@ return {
 --   'elihunter173/dirbuf.nvim'
 -- }
 {
+  enabled = false,
   'ojroques/nvim-bufdel',
   cmd = 'BufDel',
 },
