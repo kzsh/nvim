@@ -83,6 +83,7 @@ return {
       vim.keymap.set('n', '<leader>;f', builtin.find_files, {})
       vim.keymap.set('n', '<leader>;F', function() builtin.find_files({ cwd = cwd() }) end, {})
       vim.keymap.set('n', '<leader>;af', function() builtin.find_files({ cwd = git_root_dir() }) end, {})
+      vim.keymap.set('n', '<leader>;hf', function() builtin.find_files({ hidden = true, cwd = git_root_dir() }) end, {})
       vim.keymap.set('n', '<leader>ff', builtin.live_grep, {})
       vim.keymap.set('n', '<leader>af', function() builtin.live_grep({ cwd = git_root_dir() }) end, {})
       vim.keymap.set('n', '<leader>FF', function() builtin.live_grep({ cwd = cwd() }) end, {})
