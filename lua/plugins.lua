@@ -103,7 +103,7 @@ return {
       'dcampos/cmp-snippy',
       'doxnit/cmp-luasnip-choice',
       'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-cmdline',
+      -- 'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lsp-document-symbol',
       'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -128,6 +128,10 @@ return {
           ["<C-e>"] = cmp.mapping.abort(),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          -- ['<Tab>'] = cmp.config.disable,--{
+          --     -- i = ...,
+          --     c = cmp.config.disable
+          -- },
           -- ['<C-Space>'] = cmp.mapping.complete(),
           -- ['<C-e>'] = cmp.mapping.abort(),
           -- ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
