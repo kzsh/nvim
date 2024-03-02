@@ -173,20 +173,20 @@ return {
     end,
     event = 'InsertEnter',
 },
--- {
---   'lewis6991/hover.nvim',
---   event = 'BufReadPost',
---   config = function()
---     require('hover').setup {
---       init = function()
---         require 'hover.providers.lsp'
---       end,
---     }
---
---     vim.keymap.set('n', 'K', require('hover').hover, { desc = 'hover.nvim' })
---     vim.keymap.set('n', 'gK', require('hover').hover_select, { desc = 'hover.nvim (select)' })
---   end,
--- },
+{
+  'lewis6991/hover.nvim',
+  event = 'BufReadPost',
+  config = function()
+    require('hover').setup {
+      init = function()
+        require 'hover.providers.lsp'
+      end,
+    }
+
+    vim.keymap.set('n', 'K', require('hover').hover, { desc = 'hover.nvim' })
+    vim.keymap.set('n', 'gK', require('hover').hover_select, { desc = 'hover.nvim (select)' })
+  end,
+},
 
 -- Show +/-/~ in the gutter
 {
@@ -236,6 +236,21 @@ return {
 -- Distraction-free vim config -- often used in presentation
 {
   'junegunn/goyo.vim',
+
+  init = function()
+    vim.cmd([[
+      function! s:goyo_enter()
+        setlocal linebreak wrap
+      endfunction
+
+      function! s:goyo_leave()
+        setlocal nolinebreak nowrap
+      endfunction
+
+      autocmd! User GoyoEnter nested call <SID>goyo_enter()
+      autocmd! User GoyoLeave nested call <SID>goyo_leave()
+    ]])
+  end,
   cmd = 'Goyo',
 },
 {
@@ -761,14 +776,14 @@ return {
         vim.keymap.set({ 'n', 'v' }, '<leader>mca', vim.lsp.buf.code_action, opts)
         vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
         vim.keymap.set('n', '<leader>mf', function()
-          vim.lsp.buf.format { async = true }
+          vim.lsp.buf.format { async = false }
         end, opts)
       end,
     })
   end,
   dependencies = {
-    'jose-elias-alvarez/null-ls.nvim',
-    'jose-elias-alvarez/typescript.nvim',
+    -- 'jose-elias-alvarez/null-ls.nvim',
+    -- 'jose-elias-alvarez/typescript.nvim',
     'mfussenegger/nvim-jdtls',
     'iamcco/diagnostic-languageserver',
   }
@@ -850,7 +865,9 @@ return {
   {
     "williamboman/mason.nvim",
     init = function()
-      require("mason").setup()
+      require("mason").setup({
+        PATH = "prepend", -- "skip" seems to cause the spawning error
+      })
       require("mason-lspconfig").setup()
     end,
     priority = 900, -- make sure to load this before all the other start plugins
@@ -895,7 +912,7 @@ return {
             field = "CREATED_AT",                -- either COMMENTS, CREATED_AT or UPDATED_AT (https://docs.github.com/en/graphql/reference/enums#issueorderfield)
             direction = "DESC"                   -- either DESC or ASC (https://docs.github.com/en/graphql/reference/enums#orderdirection)
           },
-          always_select_remote_on_create = "false" -- always give prompt to select base remote repo when creating PRs
+          always_select_remote_on_create = false -- always give prompt to select base remote repo when creating PRs
         },
         file_panel = {
           size = 10,                             -- changed files panel rows
