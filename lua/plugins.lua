@@ -144,6 +144,7 @@ return {
           { name = 'nvim_lua', keyword_length = 2},       -- complete neovim's Lua runtime API such vim.lsp.*
           { name = 'buffer', keyword_length = 2 },        -- source current buffer
           { name = 'calc'},
+          { name = 'cmdline' },
         }),
         -- window = {
         --   completion = cmp.config.window.bordered(),
@@ -386,11 +387,11 @@ return {
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
   },
-  ft = 'qf'
+  ft = {'qf'}
 },
 {
   'tpope/vim-repeat',
-  event = "VeryLazy",
+  event = 'BufRead',
 },
 {
     "kylechui/nvim-surround",
@@ -419,11 +420,6 @@ return {
   'tpope/vim-cucumber',
   ft = {'cucumber'}
 },
-{
-  'cespare/vim-toml',
-    branch = 'main',
-    ft = {'toml'},
-},
 -- {
 --   'codota/tabnine-nvim',
 --   build: './dl_binaries.sh',
@@ -447,53 +443,59 @@ return {
     -- treesitter config
     ------------------------------------------------------------
     require'nvim-treesitter.configs'.setup {
-        highlight = {
-            enable = true,
-        },
-
-        incremental_selection = {
-            enable = false,
-        },
-
+      highlight = {
+        enable = true,
         additional_vim_regex_highlighting = {'vimscript', 'gitcommit', 'gitrebase'},
+      },
 
-        playground = {
-            enable = true,
-            disable = {},
-            updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
-            persist_queries = false, -- Whether the query persists across vim sessions
-            keybindings = {
-                toggle_query_editor = 'o',
-                toggle_hl_groups = 'i',
-                toggle_injected_languages = 't',
-                toggle_anonymous_nodes = 'a',
-                toggle_language_display = 'I',
-                focus_language = 'f',
-                unfocus_language = 'F',
-                update = 'R',
-                goto_node = '<cr>',
-                show_help = '?',
-            },
+      incremental_selection = {
+        enable = false,
+      },
+      ident = { enable = true },
+      rainbow = {
+        enable = true,
+        extended_mode = true,
+        max_file_lines = nil,
+      },
+      playground = {
+        enable = true,
+        disable = {},
+        updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+        persist_queries = false, -- Whether the query persists across vim sessions
+        keybindings = {
+          toggle_query_editor = 'o',
+          toggle_hl_groups = 'i',
+          toggle_injected_languages = 't',
+          toggle_anonymous_nodes = 'a',
+          toggle_language_display = 'I',
+          focus_language = 'f',
+          unfocus_language = 'F',
+          update = 'R',
+          goto_node = '<cr>',
+          show_help = '?',
         },
-        ensure_installed = {
-            "bash",
-            "c",
-            "css",
-            "cpp",
-            "dockerfile",
-            "vimdoc",
-            "java",
-            "json",
-            "jsonc",
-            "html",
-            "javascript",
-            "lua",
-            "toml",
-            "tsx",
-            "typescript",
-            "vim",
-            "yaml",
-        },
+      },
+      ensure_installed = {
+        "bash",
+        "c",
+        "css",
+        "cpp",
+        "dockerfile",
+        "vimdoc",
+        "java",
+        "json",
+        "jsonc",
+        "html",
+        "javascript",
+        "lua",
+        "toml",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+        "markdown",
+        "markdown_inline",
+      },
     }
   end
 },
@@ -522,7 +524,7 @@ return {
     -- This must be a dictionary, and {} gets converted to a list
     g.vimtex_syntax_conceal_disable = 1
   end,
-  -- ft = 'tex',
+  -- ft = { 'tex' },
   lazy = false,
 },
 'barreiroleo/ltex_extra.nvim',
@@ -583,45 +585,15 @@ return {
   ft = {'kotlin'}
 },
 {
-  'dkarter/bullets.vim',
-  ft = {'markdown'}
-},
-{
-  'jeetsukumaran/vim-pursuit',
-  branch = 'main',
+  'jghauser/follow-md-links.nvim',
   ft = {'markdown'},
+  dependencies = {
+    'nvim-treesitter/nvim-treesitter',
+  }
 },
-{
-  'plasticboy/vim-markdown',
-  enabled = false,
-  ft = {'markdown'},
-  config = function()
-
-    vim.cmd([[
-      "==========================================================
-      " vim Markdown
-      "==========================================================
-      let g:markdown_fenced_languages = ['html', 'ruby', 'js=javascript', 'python', 'bash=sh', 'graphql', 'ts=typescript', 'sql', 'cypher']
-      " let g:vim_markdown_conceal = 0
-      let g:vim_markdown_conceal_code_blocks = 0
-    ]])
-  end
-},
--- {
---   'dhruvasagar/vim-table-mode',
---   ft = {'markdown'},
--- }
 {
   'darfink/vim-plist',
   ft = {'plist'}
-},
-{
-  'noprompt/vim-yardoc',
-  ft = {'ruby'}
-},
-{
-  'rust-lang/rust.vim',
-  ft = {'rust'}
 },
 {
   'lifepillar/pgsql.vim',
@@ -637,11 +609,10 @@ return {
 },
 {
   'cespare/vim-toml',
+  branch = 'main',
   ft = {'toml'}
 },
 {
-  'rhysd/reply.vim',
-  ft = {'Repl', 'ReplAuto', 'ReplSend'}
 },
 {
   'simrat39/rust-tools.nvim',
@@ -650,12 +621,12 @@ return {
     local rt = require("rust-tools")
     rt.setup({
       server = {
-        -- on_attach = function(_, bufnr)
+        on_attach = function(_, bufnr)
           -- Hover actions
-          -- vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+          vim.keymap.set("n", "<S-k>", rt.hover_actions.hover_actions, { buffer = bufnr })
           -- Code action groups
-          -- vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-        -- end,
+          vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+        end,
       },
     })
   end
@@ -670,81 +641,36 @@ return {
       capabilities = capabilities
     })
 
-    lspconfig.rust_analyzer.setup({
+    lspconfig.cssls.setup({
+      capabilities = capabilities
+    })
+    lspconfig.cssmodules_ls.setup({
+      capabilities = capabilities
+    })
+    lspconfig.tsserver.setup({
+      capabilities = capabilities
+    })
+    lspconfig.svelte.setup ({
+      capabilities = capabilities
+    })
+    lspconfig.eslint.setup({
       capabilities = capabilities
     })
 
-
-    -- lspconfig.jdtls.setup({
-    --   capabilities = capabilities,
-    --   code_actions = {
-    --     enable = true,
-    --     apply_on_save = {
-    --       enable = true,
-    --       types = { "directive", "problem", "suggestion", "layout" },
-    --     },
-    --     disable_rule_comment = {
-    --       enable = true,
-    --       location = "separate_line", -- or `same_line`
-    --     },
-    --   },
-    --   diagnostics = {
-    --     enable = true,
-    --     report_unused_disable_directives = false,
-    --     run_on = "save", -- or `type`
-    --   },
-    -- })
-
-    local null_ls = require("null-ls")
-    null_ls.setup({
-      on_attach = function(client, bufnr)
-        if client.supports_method("textDocument/formatting") then
-          vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-          vim.api.nvim_create_autocmd("BufWritePre", {
-            group = augroup,
-            buffer = bufnr,
-            callback = function()
-              vim.lsp.buf.format({
-                async = true,
-                bufnr = bufnr,
-                filter = function(client)
-                  return client.name ~= "tsserver"
-                end,
-              })
-            end,
-          })
-        end
-      end,
-      sources = {
-        null_ls.builtins.code_actions.eslint,
-        null_ls.builtins.diagnostics.eslint,
-        null_ls.builtins.formatting.eslint,
-
-        null_ls.builtins.diagnostics.stylelint,
-        null_ls.builtins.formatting.stylelint,
+    lspconfig.rust_analyzer.setup({
+      capabilities = capabilities,
+      check = {
+        command = "clippy";
+      },
+      diagnostics = {
+        enable = true;
       }
     })
 
-    require("typescript").setup({
-      disable_commands = true, -- prevent the plugin from creating Vim commands
-      debug = false, -- enable debug logging for commands
-      go_to_source_definition = {
-        fallback = true, -- fall back to standard LSP definition on failure
-      },
-      server = { -- pass options to lspconfig's setup method
-        capabilities = capabilities,
-        code_actions = {
-          enable = true,
-          apply_on_save = {
-            enable = true,
-            types = { "directive", "problem", "suggestion", "layout" },
-          },
-          disable_rule_comment = {
-            enable = true,
-            location = "separate_line", -- or `same_line`
-          },
-        }
-      },
+    vim.api.nvim_create_autocmd({"BufWritePre"}, {
+      callback = function(ev)
+        vim.lsp.buf.format()
+      end
     })
 
     vim.keymap.set('n', '<leader>k', vim.diagnostic.open_float)
