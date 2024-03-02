@@ -97,6 +97,33 @@ function! PostgreSQLViewQuery()
   execute('silent! vsplit ' . l:out_file_path)
 endfunction
 
+"==========================================================
+" Node.js Execute visual-selection
+"==========================================================
+function! NodeRepl(is_inline) range
+  let l:out_file_path = g:kzsh.query_result_dir . '/nodejs/out/' . expand('%:t:r') . '.txt'
+  let l:in_file_path = g:kzsh.query_result_dir . '/nodejs/in/' . expand('%:t:r') . '.js'
+  if(a:is_inline == 2)
+    execute('%w! ' . l:in_file_path . ' | !node ' . l:in_file_path . ' > ' . l:out_file_path)
+  elseif(a:is_inline == 1)
+    let l:visual = GetVisualSelection()
+    call writefile(l:visual, l:in_file_path, 'b')
+    " echom l:in_file_path
+    execute('%w! ' . l:in_file_path . ' | !node ' . l:in_file_path . ' > ' . l:out_file_path)
+  elseif(a:is_inline == 0)
+    call writefile(split(getline('.'), "\n"), l:in_file_path, 'b')
+    " echom split(getline('.'), "\n")
+    " execute('!cat ' . l:in_file_path)
+    execute('%w! ' . l:in_file_path . ' | !node ' . l:in_file_path . ' > ' . l:out_file_path)
+  else
+    echom "no valid approach selected"
+  endif
+endfunction
+
+function! NodeReplViewQuery()
+  let l:out_file_path = g:kzsh.query_result_dir . '/nodejs/out/' . expand('%:t:r') . '.txt'
+  execute('silent! vsplit ' . l:out_file_path)
+endfunction
 
 augroup ExecuteSelectedTextByFileType
   autocmd FileType ruby       vnoremap <buffer> <Leader>rr :!cat \| awk '{ print "puts "$0 }' \| ruby<CR>
@@ -123,6 +150,11 @@ augroup ExecuteSelectedTextByFileType
   autocmd FileType sql nnoremap <buffer> <Leader>rr :call PostgreSQLQuery(0)<CR>
   autocmd FileType sql vnoremap <buffer> <Leader>rr :call PostgreSQLQuery(1)<CR>
   autocmd FileType sql nnoremap <buffer> <Leader>ra :call PostgreSQLQuery(2)<CR>
+
+  autocmd FileType javascript nnoremap <buffer> <Leader>ro :call NodeReplViewQuery()<CR>
+  autocmd FileType javascript nnoremap <buffer> <Leader>rr :call NodeRepl(0)<CR>
+  autocmd FileType javascript vnoremap <buffer> <Leader>rr :call NodeRepl(1)<CR>
+  autocmd FileType javascript nnoremap <buffer> <Leader>ra :call NodeRepl(2)<CR>
 
 augroup END
 ]])
