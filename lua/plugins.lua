@@ -1017,8 +1017,10 @@ return {
       'nvim-lua/plenary.nvim',
       'nvim-dap',
     }
-  }, {
+  },
+  {
     'chrisbra/csv.vim',
      event = "BufRead",
+     ft = {'csv'}
   }
 }
