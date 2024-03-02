@@ -2,7 +2,7 @@
 -- Configure globals/opts
 --==========================================================
 kzsh = {}
-kzsh.vim_tmp_dir = vim.env.VIM_DIR .. '/.tmp'	
+kzsh.vim_tmp_dir = vim.env.VIM_DIR .. '/.tmp'
 kzsh.system_tmp_dir = '/tmp/neovim'
 kzsh.query_result_dir = vim.env.HOME .. '/.neovim-queries'
 kzsh.vim_log_dir = kzsh.system_tmp_dir
@@ -25,7 +25,8 @@ vim.opt.hidden = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 5
 vim.opt.list = true
-vim.opt.listchars = "tab:>-,trail:~,extends:>,precedes:<"
+vim.opt.listchars = "space: ,tab:  ,trail:~,extends:>,precedes:<"
+-- vim.opt.listchars = "tab:>-,trail:~,extends:>,precedes:<"
 vim.opt.timeout = false
 vim.opt.ttimeout = false
 vim.opt.ttimeoutlen = 0
