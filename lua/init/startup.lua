@@ -8,6 +8,8 @@ kzsh.query_result_dir = vim.env.HOME .. '/.neovim-queries'
 kzsh.vim_log_dir = kzsh.system_tmp_dir
 vim.g.kzsh = kzsh
 
+vim.loader.enable()
+
 vim.fn.mkdir(vim.g.kzsh.vim_log_dir, 'p')
 
 vim.g.path = ".,**,,"
@@ -20,7 +22,7 @@ vim.opt.wrap = false
 vim.opt.laststatus = 1
 vim.opt.showmode = false
 vim.opt.shortmess = "filnxtToOFrsI"
-vim.opt.regexpengine = 0
+vim.opt.regexpengine = 1
 vim.opt.hidden = true
 vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 5
@@ -58,6 +60,8 @@ vim.opt.completeopt = "longest,menuone,preview,noselect"
 vim.opt.undofile = true
 vim.opt.undolevels=1000
 vim.opt.undoreload=10000
+
+vim.opt.termguicolors = true
 
 if vim.fn.executable('rg') then
   -- set grepprg=rg\ --vimgrep\ --no-heading

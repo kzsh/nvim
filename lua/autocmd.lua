@@ -39,6 +39,7 @@ autocmd BufRead,BufNewFile rules              setlocal filetype=make
 autocmd BufRead,BufNewFile .swcrc             setlocal filetype=json
 autocmd BufRead,BufNewFile *.yml.template     setlocal filetype=yaml
 autocmd BufRead,BufNewFile .xinitrc           setlocal filetype=sh
+autocmd BufRead,BufNewFile default.conf       setlocal filetype=conf
 
 " set Tabs per file-type.  (current unused, see above)
 autocmd Filetype html setlocal ts=2 sts=2 sw=2
@@ -78,6 +79,7 @@ autocmd Filetype checkhealth setlocal syntax=ON
 autocmd Filetype diff setlocal syntax=ON
 autocmd Filetype csv setlocal syntax=ON
 autocmd Filetype svelte setlocal tabstop=2 softtabstop=2 shiftwidth=2
+autocmd Filetype conf setlocal syntax=ON
 
 
 autocmd FileType json syntax match Comment +\/\/.\+$+
