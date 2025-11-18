@@ -80,6 +80,7 @@ autocmd Filetype diff setlocal syntax=ON
 autocmd Filetype csv setlocal syntax=ON
 autocmd Filetype svelte setlocal tabstop=2 softtabstop=2 shiftwidth=2
 autocmd Filetype conf setlocal syntax=ON
+autocmd Filetype vimwiki setlocal ts=2 sts=2 sw=2 syntax=ON
 
 
 autocmd FileType json syntax match Comment +\/\/.\+$+
