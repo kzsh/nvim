@@ -350,19 +350,7 @@ return {
 {
   'tpope/vim-repeat',
   event = "VeryLazy",
-},
-'tpope/vim-unimpaired',
-{
-  'tpope/vim-classpath',
-  ft = {'clojure'},
-},
-{
-  'tpope/vim-fireplace',
-  ft = {'clojure'}
-},
-{
-  'tpope/vim-cucumber',
-  ft = {'cucumber'}
+  priority = 1000,
 },
 {
     "kylechui/nvim-surround",
@@ -748,32 +736,6 @@ return {
     'jose-elias-alvarez/typescript.nvim',
     'mfussenegger/nvim-jdtls',
     'iamcco/diagnostic-languageserver',
-  }
-},
--- {
---   'codota/tabnine-nvim',
---   build: './dl_binaries.sh',
--- },
-{
-  'dense-analysis/neural',
-  event = 'VeryLazy',
-  cmd = 'Neural',
-  config = function()
-    require('neural').setup({
-      selected = 'chatgpt',
-      source = {
-        openai = {
-          api_key = vim.env.OPENAI_API_KEY,
-        },
-        -- chatgpt = {
-        --   api_key = vim.env.OPENAI_API_KEY,
-        -- },
-      },
-    })
-  end,
-  dependencies = {
-    'muniftanjim/nui.nvim',
-    'elpiloto/significant.nvim',
   }
 },
 {
