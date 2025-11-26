@@ -626,11 +626,11 @@ return {
     local lspconfig = require('lspconfig')
     -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-    lspconfig.bashls.setup({
+    vim.lsp.config('bashls', {
       capabilities = capabilities
     })
 
-    -- lspconfig.clangd.setup({
+    -- vim.lsp.config('clangd', {
     --   format_on_save = false,
     --   on_attach = function(client, bufnr)
     --     client.server_capabilities.signatureHelpProvider = false
@@ -639,29 +639,29 @@ return {
     --   capabilities = capabilities,
     -- })
 
-    -- lspconfig.cssls.setup({
+    -- vim.lsp.config('cssls', {
     --   capabilities = capabilities
     -- })
 
-    lspconfig.rust_analyzer.setup({
+    vim.lsp.config('rust_analyzer', {
       capabilities = capabilities
     })
 
-    lspconfig.ts_ls.setup({
+    vim.lsp.config('ts_ls', {
       capabilities = capabilities,
       format = false,
     })
 
-    -- lspconfig.cssmodules_ls.setup({
+    -- vim.lsp.config('cssmodules_ls', {
     --   capabilities = capabilities
     -- })
 
-    -- lspconfig.stylelint_lsp.setup({
+    -- vim.lsp.config('stylelint_lsp', {
     --   capabilities = capabilities,
     --   filetypes = {'css', 'less', 'scss'}
     -- })
 
-    lspconfig.jdtls.setup({
+    vim.lsp.config('jdtls', {
       capabilities = capabilities,
       code_actions = {
         enable = true,
