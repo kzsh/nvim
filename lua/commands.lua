@@ -1,8 +1,32 @@
+vim.api.nvim_create_user_command('AiChat', function()
+  local mode = vim.fn.mode()
+  if mode == 'v' or mode == 'V' then
+    local temp_file = vim.fn.tempname()
+    local temp_err_file = vim.fn.tempname()
+    local command = string.format("'<,'>!aichat > %s 2> %s", vim.fn.shellescape(temp_file), vim.fn.shellescape(temp_err_file))
+
+    -- Execute the command and replace the selection with the output
+    vim.cmd(command)
+
+    -- Check and display any error messages captured in the temp file
+    if vim.fn.filereadable(temp_file) and vim.fn.getfsize(temp_file) > 0 then
+      vim.cmd('botright new')
+      vim.cmd('read ' .. temp_file)
+      vim.cmd('file AiChat Errors')
+      vim.cmd('setlocal buftype=nofile')
+    end
+  end
+end, { range = true })
+
 vim.cmd([[
+
+
 "==========================================================
 " Add shortcut to edit init.vim/vimrc
 "==========================================================
 command! INIT tabedit $MYVIMRC
+
+command! -register Chat call aichat
 
 
 "==========================================================
