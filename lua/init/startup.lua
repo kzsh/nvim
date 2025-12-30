@@ -30,9 +30,10 @@ vim.opt.list = true
 vim.opt.listchars = "space: ,tab:  ,trail:~,extends:>,precedes:<"
 -- vim.opt.listchars = "tab:>-,trail:~,extends:>,precedes:<"
 vim.opt.timeout = false
-vim.opt.ttimeout = false
-vim.opt.ttimeoutlen = 0
 
+-- causes overwrites from clipboard and key sequences on start-up when set
+-- vim.opt.ttimeout = false
+vim.opt.ttimeoutlen = 0
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.writebackup = false
