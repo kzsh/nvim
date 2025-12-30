@@ -9,7 +9,6 @@ if vim.fn.has("vim_starting") then
   vim.g.mapleader = " "
   require ("init/startup")
   require ('init/lazy')
-
 end
 
 require('utils')
