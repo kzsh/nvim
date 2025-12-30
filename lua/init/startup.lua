@@ -28,7 +28,7 @@ vim.opt.scrolloff = 8
 vim.opt.sidescrolloff = 5
 vim.opt.list = true
 vim.opt.listchars = "space: ,tab:  ,trail:~,extends:>,precedes:<"
--- vim.opt.listchars = "tab:>-,trail:~,extends:>,precedes:<"
+vim.opt.listchars = "tab:>-,trail:~,extends:>,precedes:<"
 vim.opt.timeout = false
 
 -- causes overwrites from clipboard and key sequences on start-up when set
