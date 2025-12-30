@@ -26,5 +26,4 @@ require('fns/tig')
 require('fns/git')
 require('fns/github')
 require('cfg/terminal')
--- require 'cfg/ale' -- Move to plugins.lua under ale entry
 require('keybindings')
