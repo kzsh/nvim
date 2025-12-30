@@ -625,6 +625,11 @@ return {
   config = function()
     local lspconfig = require('lspconfig')
     -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    --
+    vim.lsp.config('sourcekit-lsp', {
+      filetypes = { "swift", "objective-c", "objective-cpp" },
+      root_dir = lspconfig.util.root_pattern("Package.swift", ".git", "compile_commands.json"),
+    })
 
     vim.lsp.config('bashls', {
       capabilities = capabilities
