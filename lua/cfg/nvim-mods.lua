@@ -1,9 +1,6 @@
-vim.cmd([[
-"=========================================================m
-" Use buffer ex view by default
-"==========================================================
-nnoremap : q:i
-nnoremap <Leader>: :
+local map = vim.keymap.set
 
-inoremap <C-r><C-g> <Esc>:echo bufname(bufnr(''))<CR>i
-]])
+-- Use buffer ex view by default
+map("n", ":", "q:i")
+map("n", "<Leader>:", ":")
+map("i", "<C-r><C-g>", "<Esc>:echo bufname(bufnr(''))<CR>i")
