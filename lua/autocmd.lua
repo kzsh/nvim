@@ -1,102 +1,223 @@
-vim.cmd([[
-"==========================================================
-" FileType-specific formatting
-"==========================================================
-autocmd BufRead,BufNewFile *.applescript      setlocal filetype=applescript
-autocmd BufRead,BufNewFile *.avdl             setlocal filetype=avdl
-autocmd BufRead,BufNewFile Jenkinsfile*       setlocal filetype=groovy
-autocmd BufRead,BufNewFile *Jenkinsfile       setlocal filetype=groovy
-autocmd BufRead,BufNewFile .babelrc           setlocal filetype=json
-autocmd BufRead,BufNewFile .eslintrc          setlocal filetype=json
-autocmd BufRead,BufNewFile .stylelintrc       setlocal filetype=json
-autocmd BufRead,BufNewFile coc-settings.json  setlocal filetype=jsonc
-autocmd BufRead,BufNewFile tsconfig.json      setlocal filetype=jsonc
-autocmd BufRead,BufNewFile *.kt               setlocal filetype=kotlin
-autocmd BufRead,BufNewFile *.kt               setlocal filetype=kotlin
-autocmd BufRead,BufNewFile *.markdown         setlocal filetype=markdown
-autocmd BufRead,BufNewFile *.md               setlocal filetype=markdown
-autocmd BufRead,BufNewFile *.mkd              setlocal filetype=markdown
-autocmd BufRead,BufNewFile *.jbuilder         setlocal filetype=ruby
-autocmd BufRead,BufNewFile Podfile*           setlocal filetype=ruby
-autocmd BufRead,BufNewFile Vagrantfile*       setlocal filetype=ruby
-autocmd BufRead,BufNewFile Dockerfile*        setlocal filetype=dockerfile
-autocmd BufRead,BufNewFile *.dockerfile       setlocal filetype=dockerfile
-autocmd BufRead,BufNewFile *-Dockerfile       setlocal filetype=dockerfile
-autocmd BufRead,BufNewFile *-dockerfile       setlocal filetype=dockerfile
-autocmd BufRead,BufNewFile .envrc             setlocal filetype=sh
-autocmd BufRead,BufNewFile *.swift            setlocal filetype=swift
-autocmd BufRead,BufNewFile *.ts               setlocal filetype=typescript
-autocmd BufRead,BufNewFile *.tsx              setlocal filetype=typescript.tsx
-autocmd BufRead,BufNewFile *.dust             setlocal filetype=dust
-autocmd BufRead,BufNewFile *.mongo.js         setlocal filetype=mongodb.javascript
-autocmd BufRead,BufNewFile *.handlebars       setlocal filetype=mustache
-autocmd BufRead,BufNewFile requirements.txt   setlocal filetype=python
-autocmd BufRead,BufNewFile *.ipynb            setlocal filetype=python
-autocmd BufRead,BufNewFile .gitignore*        setlocal filetype=conf
-autocmd BufRead,BufNewFile *sxhkdrc           setlocal filetype=sxhkdrc
-autocmd BufRead,BufNewFile *.cypher           setlocal filetype=cypher
-autocmd BufRead,BufNewFile rules              setlocal filetype=make
-autocmd BufRead,BufNewFile .swcrc             setlocal filetype=json
-autocmd BufRead,BufNewFile *.yml.template     setlocal filetype=yaml
-autocmd BufRead,BufNewFile .xinitrc           setlocal filetype=sh
-autocmd BufRead,BufNewFile default.conf       setlocal filetype=conf
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
 
-" set Tabs per file-type.  (current unused, see above)
-autocmd Filetype html setlocal ts=2 sts=2 sw=2
-autocmd Filetype css setlocal ts=2 sts=2 sw=2
-autocmd Filetype tag setlocal ts=2 sts=2 sw=2 syntax=ON
-autocmd Filetype xml setlocal ts=2 sts=2 sw=2
-autocmd Filetype jsp setlocal ts=2 sts=2 sw=2
-autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
-autocmd Filetype javascript setlocal ts=2 sts=2 sw=2
-autocmd Filetype mongodb.javascript setlocal ts=2 sts=2 sw=2 syntax=javascript
-autocmd Filetype typescript setlocal ts=2 sts=2 sw=2
-autocmd Filetype m setlocal ts=4 sts=4 sw=4
-autocmd Filetype h setlocal ts=4 sts=4 sw=4
-autocmd Filetype wflow setlocal ts=4 sts=4 sw=4 syntax=ON
-autocmd Filetype plist setlocal ts=4 sts=4 sw=4 syntax=ON
-autocmd Filetype swift setlocal ts=2 sts=2 sw=2
-autocmd Filetype applescript setlocal ts=4 sts=4 sw=4 noexpandtab syntax=ON
-autocmd Filetype groovy setlocal ts=4 sts=4 sw=4 syntax=ON
-autocmd Filetype kotlin setlocal ts=4 sts=4 sw=4
-autocmd Filetype markdown setlocal conceallevel=0 spell
-autocmd Filetype json setlocal conceallevel=0
-autocmd Filetype gitconfig setlocal ts=2 sts=2 sw=2 noexpandtab syntax=ON
-autocmd Filetype fugitiveblame setlocal syntax=ON
-autocmd Filetype git* setlocal spell syntax=ON
-autocmd Filetype sxhkdrc setlocal ts=2 sts=2 sw=2 noexpandtab syntax=ON syntax=conf
-" autocmd Filetype vim setlocal syntax=ON
-autocmd Filetype make setlocal syntax=ON
-" autocmd Filetype toml setlocal syntax=ON
-" autocmd Filetype dockerfile setlocal syntax=ON
-" autocmd Filetype yaml setlocal syntax=ON
-autocmd Filetype xf86conf setlocal syntax=ON
-" autocmd Filetype c setlocal syntax=ON
-" autocmd Filetype cpp setlocal syntax=ON
-" autocmd Filetype lua setlocal syntax=ON
-autocmd Filetype cypher setlocal syntax=ON commentstring=//\ %s
-autocmd Filetype checkhealth setlocal syntax=ON
-autocmd Filetype diff setlocal syntax=ON
-autocmd Filetype csv setlocal syntax=ON
-autocmd Filetype svelte setlocal tabstop=2 softtabstop=2 shiftwidth=2
-autocmd Filetype conf setlocal syntax=ON
-autocmd Filetype vimwiki setlocal ts=2 sts=2 sw=2 syntax=ON
+-- Filetype detection
+vim.filetype.add({
+  extension = {
+    applescript = "applescript",
+    avdl = "avdl",
+    kt = "kotlin",
+    markdown = "markdown",
+    md = "markdown",
+    mkd = "markdown",
+    jbuilder = "ruby",
+    dockerfile = "dockerfile",
+    swift = "swift",
+    ts = "typescript",
+    tsx = "typescript.tsx",
+    dust = "dust",
+    handlebars = "mustache",
+    ipynb = "python",
+    cypher = "cypher",
+  },
+  filename = {
+    [".babelrc"] = "json",
+    [".eslintrc"] = "json",
+    [".stylelintrc"] = "json",
+    ["coc-settings.json"] = "jsonc",
+    ["tsconfig.json"] = "jsonc",
+    ["requirements.txt"] = "python",
+    [".swcrc"] = "json",
+    [".envrc"] = "sh",
+    [".xinitrc"] = "sh",
+    ["rules"] = "make",
+    ["default.conf"] = "conf",
+  },
+  pattern = {
+    ["^Jenkinsfile"] = "groovy",
+    ["Jenkinsfile$"] = "groovy",
+    ["^Podfile"] = "ruby",
+    ["^Vagrantfile"] = "ruby",
+    ["^Dockerfile"] = "dockerfile",
+    ["%-Dockerfile$"] = "dockerfile",
+    ["%-dockerfile$"] = "dockerfile",
+    ["%.mongo%.js$"] = "mongodb.javascript",
+    ["^%.gitignore"] = "conf",
+    ["sxhkdrc$"] = "sxhkdrc",
+    ["%.yml%.template$"] = "yaml",
+  },
+})
 
+-- Per-filetype settings
+local ft_group = augroup("FileTypeSettings", { clear = true })
 
-autocmd FileType json syntax match Comment +\/\/.\+$+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = { "html", "css", "xml", "jsp", "ruby", "javascript", "typescript", "swift", "svelte" },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end,
+})
 
-autocmd Filetype javascript setlocal makeprg=pretty-quick\ --pattern\ %
-autocmd Filetype typescript setlocal makeprg=pretty-quick\ --pattern\ %
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "tag",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.syntax = "ON"
+  end,
+})
 
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "mongodb.javascript",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.syntax = "javascript"
+  end,
+})
 
-"==========================================================
-" Run Autocommit on TODO.md
-"==========================================================
-let g:notes_path = expand("$NOTES_DIR")
-augroup autoCommitChangesToNotes
-  au!
-  " TODO: don't execute todo commit for any TODO.md file anywhere.
-  autocmd BufWritePre ~/notes/** silent! execute('!' . g:notes_path . '/autocommit.sh')
-augroup END
+autocmd("FileType", {
+  group = ft_group,
+  pattern = { "m", "h", "kotlin" },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+  end,
+})
 
-]])
+autocmd("FileType", {
+  group = ft_group,
+  pattern = { "wflow", "plist", "groovy" },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.syntax = "ON"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "applescript",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = false
+    vim.opt_local.syntax = "ON"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.conceallevel = 0
+    vim.opt_local.spell = true
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "json",
+  callback = function()
+    vim.opt_local.conceallevel = 0
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "gitconfig",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = false
+    vim.opt_local.syntax = "ON"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = { "fugitiveblame", "make", "xf86conf", "checkhealth", "diff", "csv", "conf" },
+  callback = function()
+    vim.opt_local.syntax = "ON"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "git*",
+  callback = function()
+    vim.opt_local.spell = true
+    vim.opt_local.syntax = "ON"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "sxhkdrc",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = false
+    vim.opt_local.syntax = "conf"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "cypher",
+  callback = function()
+    vim.opt_local.syntax = "ON"
+    vim.opt_local.commentstring = "// %s"
+  end,
+})
+
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "vimwiki",
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.syntax = "ON"
+  end,
+})
+
+-- JSON comment highlighting
+autocmd("FileType", {
+  group = ft_group,
+  pattern = "json",
+  command = [[syntax match Comment +\/\/.\+$+]],
+})
+
+-- Prettier makeprg for JS/TS
+autocmd("FileType", {
+  group = ft_group,
+  pattern = { "javascript", "typescript" },
+  callback = function()
+    vim.opt_local.makeprg = "pretty-quick --pattern %"
+  end,
+})
+
+-- Autocommit changes to notes
+local notes_path = vim.fn.expand("$NOTES_DIR")
+local autocommit_group = augroup("autoCommitChangesToNotes", { clear = true })
+
+autocmd("BufWritePre", {
+  group = autocommit_group,
+  pattern = vim.fn.expand("~/notes") .. "/**",
+  callback = function()
+    vim.fn.system(notes_path .. "/autocommit.sh")
+  end,
+})
