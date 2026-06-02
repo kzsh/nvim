@@ -1,18 +1,13 @@
-vim.cmd([[
-"==========================================================
-" Diff Shortcuts
-"==========================================================
-" Toggle Vim diff on/off
-function! ToggleVimDiff()
-  if &diff
-    diffoff
+local map = vim.keymap.set
+
+local function toggle_vim_diff()
+  if vim.o.diff then
+    vim.cmd("diffoff")
   else
-    diffthis
-  endif
-endfunction
+    vim.cmd("diffthis")
+  end
+end
 
-noremap <Leader>gg :diffget<CR>
-noremap <Leader>gp :diffput<CR>
-nmap <Leader>;d :exe ToggleVimDiff()<CR>
-
-]])
+map("", "<Leader>gg", ":diffget<CR>")
+map("", "<Leader>gp", ":diffput<CR>")
+map("n", "<Leader>;d", toggle_vim_diff)
