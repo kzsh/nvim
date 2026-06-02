@@ -1,16 +1,14 @@
-vim.cmd([[
-"==========================================================
-" Tig
-"==========================================================
-nnoremap <Leader>tig :tabe \| execute('term tig') \| startinsert!<CR>
-" nnoremap <Leader>tif :tabe \| execute('term cd ' . FindGitRootForPath(expand('%')) . ' && tig -- ' . expand('%')) \| startinsert!<CR>
-"
-nnoremap <Leader>tif :silent! call OpenFileHistoryInTig()<CR>
+-- Tig
 
-function! OpenFileHistoryInTig()
-  let filename = expand('%')
-  tabe
-  execute('term cd ' . FindGitRootForPath(l:filename) . ' && /usr/local/bin/tig -- ' . l:filename)
-  startinsert!
-endfunction
-]])
+local map = vim.keymap.set
+
+local function open_file_history_in_tig()
+  local filename = vim.fn.expand("%")
+  local git_root = vim.fn.FindGitRootForPath(filename)
+  vim.cmd("tabe")
+  vim.fn.termopen("cd " .. git_root .. " && /usr/local/bin/tig -- " .. filename)
+  vim.cmd("startinsert!")
+end
+
+map("n", "<Leader>tig", ":tabe | execute('term tig') | startinsert!<CR>")
+map("n", "<Leader>tif", open_file_history_in_tig, { silent = true })
