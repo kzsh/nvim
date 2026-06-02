@@ -1,45 +1,44 @@
-vim.cmd([[
-function! OpenGitHubUrlForCurrentLine()
-  call system("/usr/local/bin/hub browse -- blob/$(git rev-parse HEAD)/" . expand('%') . "/#L" . line('.'))
-endfunction
+local map = vim.keymap.set
 
-function! CopyGitHubUrlForCurrentLine()
-  let l:base = FindGitRootForPath(expand('%:p:h'))
+local function open_github_url_for_current_line()
+  vim.fn.system(
+    "/usr/local/bin/hub browse -- blob/$(git rev-parse HEAD)/" .. vim.fn.expand("%") .. "/#L" .. vim.fn.line(".")
+  )
+end
 
-  if l:base == ""
-    let l:base = "."
-  endif
+local function copy_github_url_for_current_line()
+  local base = vim.fn.FindGitRootForPath(vim.fn.expand("%:p:h"))
 
-  let l:current = expand('%:p')
-  let l:relative = system("realpath --relative-to=" . l:base . " " . l:current)[:-2]
-  " echom l:relative
-  let l:base_url = system("gh repo view -b master --json url -q '.url'")[:-2] "Trim odd ^@ symbol from url
-  " echom l:base_url
+  if base == "" then
+    base = "."
+  end
 
-  " Trim newlines from the end of the command
-  let l:commit_hash = system('git rev-parse HEAD')[:-2]
-  let l:full_url = join([l:base_url, "blob", l:commit_hash, l:relative], '/')
-  let l:full_link = l:full_url . "#L" . line('.')
-  " echom l:full_link
-  let @+ = l:full_link
-  " system('echo ' . l:full_link . ' | xclip -selection clipboard')
-endfunction
+  local current = vim.fn.expand("%:p")
+  local relative = vim.fn.system("realpath --relative-to=" .. base .. " " .. current):gsub("\n$", "")
+  local base_url = vim.fn.system("gh repo view -b master --json url -q '.url'"):gsub("\n$", "")
 
-function! CopyGitHubBranchUrlForCurrentLine(branch)
-  call CopyGitHubUrlForCurrentLine()
-  " 40 is the length of the full git hash
-  let @+ = substitute(@+, "[a-z0-9]\\{40\\}", a:branch, "g")
-endfunction
+  -- Trim newlines from the end of the command
+  local commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n$", "")
+  local full_url = table.concat({ base_url, "blob", commit_hash, relative }, "/")
+  local full_link = full_url .. "#L" .. vim.fn.line(".")
+  vim.fn.setreg("+", full_link)
+end
 
-function! CopyGitHubCurrentBranchUrlForCurrentLine()
-  let l:branch = system("git rev-parse --abbrev-ref HEAD| tr -d \"\n\"")
-  echo l:branch
-  call CopyGitHubBranchUrlForCurrentLine(l:branch)
-endfunction
+local function copy_github_branch_url_for_current_line(branch)
+  copy_github_url_for_current_line()
+  -- 40 is the length of the full git hash
+  local current = vim.fn.getreg("+")
+  vim.fn.setreg("+", current:gsub("%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x%x", branch))
+end
 
-nnoremap <silent> <Leader>gx :call OpenGitHubUrlForCurrentLine()<CR>
-nnoremap <silent> <Leader>ghc :call CopyGitHubUrlForCurrentLine()<CR>
-nnoremap <silent> <Leader>ghi :call CopyGitHubBranchUrlForCurrentLine("integration")<CR>
-nnoremap <silent> <Leader>ghm :call CopyGitHubBranchUrlForCurrentLine("main")<CR>
-nnoremap <silent> <Leader>ghb :call CopyGitHubCurrentBranchUrlForCurrentLine()<CR>
-]])
+local function copy_github_current_branch_url_for_current_line()
+  local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n$", "")
+  print(branch)
+  copy_github_branch_url_for_current_line(branch)
+end
+
+map("n", "<Leader>gx", open_github_url_for_current_line, { silent = true })
+map("n", "<Leader>ghc", copy_github_url_for_current_line, { silent = true })
+map("n", "<Leader>ghi", function() copy_github_branch_url_for_current_line("integration") end, { silent = true })
+map("n", "<Leader>ghm", function() copy_github_branch_url_for_current_line("main") end, { silent = true })
+map("n", "<Leader>ghb", copy_github_current_branch_url_for_current_line, { silent = true })
