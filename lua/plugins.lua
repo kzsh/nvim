@@ -593,10 +593,6 @@ return {
   ft = { 'swift' }
 },
 {
-  'cespare/vim-toml',
-  ft = { 'toml' }
-},
-{
   'rhysd/reply.vim',
   ft = { 'Repl', 'ReplAuto', 'ReplSend' }
 },
@@ -666,15 +662,6 @@ return {
   config = function()
     -- load the colorscheme here
     -- vim.cmd([[colorscheme flexoki ]])
-  end,
-},
-{
-  'folke/tokyonight.nvim',
-  name = "tokyonight",
-  lazy = true, -- make sure we load this during startup if it is your main colorscheme
-  config = function()
-    -- load the colorscheme here
-    -- vim.cmd([[colorscheme tokyonight ]])
   end,
 },
 {
