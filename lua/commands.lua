@@ -29,7 +29,7 @@ user_command("Chat", "call aichat", { register = true })
 
 -- vim-cd to top-level of git repo
 local function cdg()
-  local root = vim.fn.FindGitRoot()
+  local root = require("utils").find_git_root()
   vim.cmd("cd " .. root)
 end
 

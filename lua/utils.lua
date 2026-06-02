@@ -1,71 +1,31 @@
-vim.cmd([[
-"==========================================================
-" Git
-"==========================================================
-function! FindGitRoot()
-  return FindGitRootForPath(expand('%'))
-endfunction
+local M = {}
 
-function! FindGitRootForPath(path)
-  let l:git_command = 'git rev-parse --show-toplevel 2> /dev/null'
-  let l:path_change = 'cd "$(dirname "' . expand(a:path) . '")"'
-  return expand(system(l:path_change . ' && ' . l:git_command)[:-2])
-endfunction
+-- Git
 
-"==========================================================
-" Utility functions
-"==========================================================
-function! Mapped(fn, l)
-  return OperateOnEnumerable(a:fn, a:l, 'map')
-endfunction
+function M.find_git_root()
+  return M.find_git_root_for_path(vim.fn.expand("%"))
+end
 
-function! Filtered(fn, l)
-  return OperateOnEnumerable(a:fn, a:l, 'filter')
-endfunction
+function M.find_git_root_for_path(path)
+  local dir = vim.fn.fnamemodify(vim.fn.expand(path), ":h")
+  local result = vim.fn.system('cd "' .. dir .. '" && git rev-parse --show-toplevel 2>/dev/null')
+  return vim.fn.expand(result:gsub("\n$", ""))
+end
 
-function! OperateOnEnumerable(fn, list, operation)
-  let l:new_list = deepcopy(a:list)
-  execute('call ' . a:operation . "(l:new_list,  string(a:fn) . '(v:val)')")
+-- Visual selection utils
 
-  return l:new_list
-endfunction
-
-"==========================================================
-" visual selection utils
-"==========================================================
-
-function! VisualSelection()
-  if mode() ==? 'v'
-    let [l:line_start, l:column_start] = getpos('v')[1:2]
-    let [l:line_end, l:column_end] = getpos('.')[1:2]
-  else
-    let [l:line_start, l:column_start] = getpos("'<")[1:2]
-    let [l:line_end, l:column_end] = getpos("'>")[1:2]
-  end
-  if (line2byte(l:line_start) + l:column_start) > (line2byte(l:line_end) + l:column_end)
-    let [l:line_start, l:column_start, l:line_end, l:column_end] =
-          \   [l:line_end, l:column_end, l:line_start, l:column_start]
-  end
-  let l:lines = getline(l:line_start, l:line_end)
-  if len(l:lines) == 0
-    return ''
-  endif
-  let l:lines[-1] = l:lines[-1][: l:column_end - 1]
-  let l:lines[0] = l:lines[0][l:column_start - 1:]
-  return join(l:lines, "\n")
-endfunction
-
-function! GetVisualSelection(separator = "\n")
-    " Why is this not a built-in Vim script function?!
-    let [line_start, column_start] = getpos("'<")[1:2]
-    let [line_end, column_end] = getpos("'>")[1:2]
-    let lines = getline(line_start, line_end)
-    if len(lines) == 0
-        return ''
-    endif
-    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][column_start - 1:]
+-- Why is this not a built-in Vim script function?!
+function M.get_visual_selection()
+  local line_start, column_start = unpack(vim.fn.getpos("'<"), 2, 3)
+  local line_end, column_end = unpack(vim.fn.getpos("'>"), 2, 3)
+  local lines = vim.fn.getline(line_start, line_end)
+  if #lines == 0 then
     return lines
-endfunction
+  end
+  local inclusive = vim.o.selection == "inclusive" and 1 or 2
+  lines[#lines] = lines[#lines]:sub(1, column_end - inclusive + 1)
+  lines[1] = lines[1]:sub(column_start)
+  return lines
+end
 
-]])
+return M

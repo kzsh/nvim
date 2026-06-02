@@ -4,7 +4,7 @@ local map = vim.keymap.set
 
 local function open_file_history_in_tig()
   local filename = vim.fn.expand("%")
-  local git_root = vim.fn.FindGitRootForPath(filename)
+  local git_root = require("utils").find_git_root_for_path(filename)
   vim.cmd("tabe")
   vim.fn.termopen("cd " .. git_root .. " && /usr/local/bin/tig -- " .. filename)
   vim.cmd("startinsert!")

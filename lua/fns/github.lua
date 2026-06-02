@@ -7,7 +7,7 @@ local function open_github_url_for_current_line()
 end
 
 local function copy_github_url_for_current_line()
-  local base = vim.fn.FindGitRootForPath(vim.fn.expand("%:p:h"))
+  local base = require("utils").find_git_root_for_path(vim.fn.expand("%:p:h"))
 
   if base == "" then
     base = "."

@@ -52,7 +52,7 @@ local function neo4j_query(mode)
   if mode == 2 then
     vim.cmd("%w! " .. in_file .. " | !" .. cypher_cmd)
   elseif mode == 1 then
-    local visual = vim.fn.GetVisualSelection()
+    local visual = require("utils").get_visual_selection()
     vim.fn.writefile(visual, in_file, "b")
     print(in_file)
     vim.cmd("!cat " .. in_file .. " | " .. cypher_cmd)
@@ -84,7 +84,7 @@ local function postgresql_query(mode)
   if mode == 2 then
     vim.cmd("%w! " .. in_file .. " | ! " .. psql_cmd .. " --file " .. in_file .. " > " .. out_file)
   elseif mode == 1 then
-    local visual = vim.fn.GetVisualSelection()
+    local visual = require("utils").get_visual_selection()
     vim.fn.writefile(visual, in_file, "b")
     print(in_file)
     vim.cmd("!cat " .. in_file .. " | " .. psql_cmd .. " > " .. out_file)
@@ -112,7 +112,7 @@ local function node_repl(mode)
   if mode == 2 then
     vim.cmd("%w! " .. in_file .. " | !node " .. in_file .. " > " .. out_file)
   elseif mode == 1 then
-    local visual = vim.fn.GetVisualSelection()
+    local visual = require("utils").get_visual_selection()
     vim.fn.writefile(visual, in_file, "b")
     -- print(in_file)
     vim.cmd("%w! " .. in_file .. " | !node " .. in_file .. " > " .. out_file)
