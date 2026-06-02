@@ -703,32 +703,32 @@ return {
   end,
 },
 {
-  "mason-org/mason-lspconfig.nvim",
-  -- opts = {
-  --   ensure_installed = {
-  --     "bash-language-server",
-  --     "bashls",
-  --     -- "clangd",
-  --     "css-lsp",
-  --     "cssls",
-  --     "cssmodules-language-server",
-  --     "cssmodules_ls",
-  --     "java-language-server",
-  --     "java_language_server",
-  --     "stylelint",
-  --     "stylelint-lsp",
-  --     "stylelint_lsp",
-  --     "typescript-language-server",
-  --     "tsserver",
-  --   },
-  -- },
-  dependencies = {
-    {"mason-org/mason.nvim", "neovim/nvim-lspconfig"},
-  },
-},
-{
   'neovim/nvim-lspconfig',
   lazy = false,
+  dependencies = {
+    { "mason-org/mason.nvim", opts = {} },
+    { "mason-org/mason-lspconfig.nvim",
+      -- opts = {
+      --   ensure_installed = {
+      --     "bash-language-server",
+      --     "bashls",
+      --     -- "clangd",
+      --     "css-lsp",
+      --     "cssls",
+      --     "cssmodules-language-server",
+      --     "cssmodules_ls",
+      --     "java-language-server",
+      --     "java_language_server",
+      --     "stylelint",
+      --     "stylelint-lsp",
+      --     "stylelint_lsp",
+      --     "typescript-language-server",
+      --     "tsserver",
+      --   },
+      -- },
+      opts = {},
+    },
+  },
   config = function()
     -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
