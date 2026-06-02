@@ -1,6 +1,4 @@
-vim.cmd([[
-function! DiffUpstreamForChangedFiles(upstream)
-  let l:git_command = 'git diff --name-only' . a:upstream
-  return expand(system(l:git_command))
-endfunction
-]])
+local function diff_upstream_for_changed_files(upstream)
+  local result = vim.fn.system("git diff --name-only" .. upstream)
+  return vim.fn.expand(result)
+end
