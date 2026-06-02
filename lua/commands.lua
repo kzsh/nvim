@@ -1,3 +1,7 @@
+local autocmd = vim.api.nvim_create_autocmd
+local augroup = vim.api.nvim_create_augroup
+local user_command = vim.api.nvim_create_user_command
+
 vim.api.nvim_create_user_command('AiChat', function()
   local mode = vim.fn.mode()
   if mode == 'v' or mode == 'V' then
@@ -18,79 +22,75 @@ vim.api.nvim_create_user_command('AiChat', function()
   end
 end, { range = true })
 
-vim.cmd([[
+-- Add shortcut to edit init.vim/vimrc
+user_command("INIT", "tabedit $MYVIMRC", {})
 
+user_command("Chat", "call aichat", { register = true })
 
-"==========================================================
-" Add shortcut to edit init.vim/vimrc
-"==========================================================
-command! INIT tabedit $MYVIMRC
+-- vim-cd to top-level of git repo
+local function cdg()
+  local root = vim.fn.FindGitRoot()
+  vim.cmd("cd " .. root)
+end
 
-command! -register Chat call aichat
+user_command("Cdg", cdg, {})
+vim.cmd([[cnoreabbrev <expr> cdg ((getcmdtype() is# ':' && getcmdline() is# 'cdg')?('Cdg'):('cdg'))]])
 
+-- Remove trailing whitespaces
+vim.g.skip_whitespace = { "markdown" }
 
-"==========================================================
-" vim-cd to top-level of git repo
-"==========================================================
-function! Cdg()
-  let l:root = FindGitRoot()
-  cd `=l:root`
-endfunction
+local function strip_trailing_whitespaces()
+  if not vim.tbl_contains(vim.g.skip_whitespace, vim.bo.filetype) then
+    local pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd([[%s/\s\+$//e]])
+    vim.api.nvim_win_set_cursor(0, pos)
+  end
+end
 
-command! Cdg :call Cdg()
-cnoreabbrev <expr> cdg ((getcmdtype() is# ':' && getcmdline() is# 'cdg')?('Cdg'):('cdg'))
+-- when saving, remove all trailing spaces from the file.
+local strip_group = augroup("StripWhitespaceOnSave", { clear = true })
+autocmd("FileType", {
+  group = strip_group,
+  pattern = "*",
+  callback = function(ev)
+    autocmd("BufWritePre", {
+      group = strip_group,
+      buffer = ev.buf,
+      callback = strip_trailing_whitespaces,
+    })
+  end,
+})
 
-"==========================================================
-" Remove trailing whitespaces
-"==========================================================
-let g:skip_whitespace = ['markdown']
+-- Remove consecutive empty lines
+local function remove_extra_empty_lines()
+  vim.cmd([[%g/^$\n\n/d]])
+end
 
-function! StripTrailingWhitespaces()
-  if index(g:skip_whitespace, &ft) < 0
-    let l:l = line('.')
-    let l:c = col('.')
-    %s/\s\+$//e
-    call cursor(l:l, l:c)
-  endif
+user_command("RemoveExtraEmptyLines", remove_extra_empty_lines, {})
 
-endfunction
+-- Copy search matches to register e.g. :CopyMatches a
+local function copy_matches(opts)
+  local hits = {}
+  vim.cmd([[%s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/gne]])
+  local reg = opts.reg ~= "" and opts.reg or "+"
+  vim.fn.setreg(reg, table.concat(hits, "\n") .. "\n")
+end
 
-"when saving, remove all trailing spaces from the file.
-augroup StripWhitespaceOnSave
-  autocmd FileType * autocmd BufWritePre <buffer> :call StripTrailingWhitespaces()
-augroup END
+user_command("CopyMatches", copy_matches, { register = true })
 
-"==========================================================
-" Remove consecutive empty lines
-"==========================================================
-function! RemoveExtraEmptyLines()
-  :%g/^$\n\n/d
-endfunction
-
-"==========================================================
-" Copy search matches to register e.g. :CopyMatches a
-"==========================================================
-function! CopyMatches(reg)
-  let l:hits = []
-  let l:reg = ""
-  %s//\=len(add(hits, submatch(0))) ? submatch(0) : ''/gne
-  let l:reg = empty(l:reg) ? '+' : l:reg
-  execute 'let @' . l:reg . ' = join(hits, "\n") . "\n"'
-endfunction
-command! -register CopyMatches call CopyMatches(<q-reg>)
-
-function s:MkNonExDir(file, buf)
-    if empty(getbufvar(a:buf, '&buftype')) && a:file!~#'\v^\w+\:\/'
-        let dir=fnamemodify(a:file, ':h')
-        if !isdirectory(dir)
-            call mkdir(dir, 'p')
-        endif
-    endif
-endfunction
-augroup BWCCreateDir
-    autocmd!
-    autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
-augroup END
-
-
-]])
+-- Auto-create directories on save
+local mkdir_group = augroup("BWCCreateDir", { clear = true })
+autocmd("BufWritePre", {
+  group = mkdir_group,
+  pattern = "*",
+  callback = function(ev)
+    local file = ev.match
+    local buf = ev.buf
+    if vim.bo[buf].buftype == "" and not file:match("^%w+://") then
+      local dir = vim.fn.fnamemodify(file, ":h")
+      if vim.fn.isdirectory(dir) == 0 then
+        vim.fn.mkdir(dir, "p")
+      end
+    end
+  end,
+})
