@@ -99,12 +99,4 @@ augroup autoCommitChangesToNotes
   autocmd BufWritePre ~/notes/** silent! execute('!' . g:notes_path . '/autocommit.sh')
 augroup END
 
-"==========================================================
-" Start terminal in insert mode
-"==========================================================
-autocmd TermOpen * startinsert
-autocmd TermLeave * setlocal number
-autocmd TermEnter * setlocal nonumber
-
-
 ]])
