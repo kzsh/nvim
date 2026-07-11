@@ -201,6 +201,8 @@ return {
       callback = function(ev)
         vim.keymap.set('n', '<S-L>', 'gt')
         vim.keymap.set('n', '<S-H>', 'g<S-t>')
+        vim.opt.wrap = true
+        vim.opt.linebreak = true
       end
     })
 
@@ -210,6 +212,8 @@ return {
       callback = function(ev)
         vim.keymap.set('n', '<S-L>', 'bn')
         vim.keymap.set('n', '<S-H>', 'bp')
+        vim.opt.wrap = false
+        vim.opt.linebreak = false
       end
     })
   end,
@@ -547,26 +551,6 @@ return {
 {
   'dkarter/bullets.vim',
   ft = { 'markdown' }
-},
-{
-  'jeetsukumaran/vim-pursuit',
-  branch = 'main',
-  ft = { 'markdown' },
-},
-{
-  'plasticboy/vim-markdown',
-  enabled = false,
-  ft = { 'markdown' },
-  config = function()
-    vim.cmd([[
-    "==========================================================
-    " vim Markdown
-    "==========================================================
-    let g:markdown_fenced_languages = ['html', 'ruby', 'js=javascript', 'python', 'bash=sh', 'graphql', 'ts=typescript', 'sql', 'cypher']
-    " let g:vim_markdown_conceal = 0
-    let g:vim_markdown_conceal_code_blocks = 0
-  ]])
-  end
 },
 -- {
 --   'dhruvasagar/vim-table-mode',
