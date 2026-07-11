@@ -19,6 +19,7 @@ vim.filetype.add({
     handlebars = "mustache",
     ipynb = "python",
     cypher = "cypher",
+    shader = "hlsl",
   },
   filename = {
     [".babelrc"] = "json",
