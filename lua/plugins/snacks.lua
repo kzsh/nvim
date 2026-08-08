@@ -18,10 +18,9 @@ return {
     quickfile = { },
     scope = { },
     scroll = { enabled = false }, -- not the UX I'm looking for
-    statuscolumn = { },
+    statuscolumn = { enabled = false },
     toggle = { },
     win = { },
-    statuscolumn = { enabled = false },
     words = { },
     image = {
       doc = {
