@@ -58,7 +58,7 @@ vim.opt.undoreload=10000
 
 vim.opt.termguicolors = true
 
-if vim.fn.executable('rg') then
+if vim.fn.executable('rg') == 1 then
   -- set grepprg=rg\ --vimgrep\ --no-heading
   vim.opt.grepprg = "rg --column --colors path:fg:blue --line-number --no-heading --color=always --smart-case"
   vim.opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
