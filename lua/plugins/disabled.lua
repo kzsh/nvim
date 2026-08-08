@@ -1,0 +1,96 @@
+-- Plugin specs that are kept for reference but currently disabled.
+
+-- {
+--     'hrsh7th/nvim-cmp',
+--     config = function(opts)
+--       local cmp = require('cmp')
+--
+--       cmp.setup({
+--         confirmation = {
+--           completeopt = 'longest,menuone,preview',
+--         },
+--         sources = cmp.config.sources({
+--           { name = 'nvim_lsp' },
+--           { name = 'nvim_lsp_signature_help' },
+--           { name = 'buffer' },
+--           { name = 'nvim_lua' },
+--           { name = 'under_comparator' },
+--           { name = 'path' },
+--         }),
+--         mapping = cmp.mapping.preset.insert({
+--           ["<CR>"] = cmp.config.disable,
+--           -- ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+--           ["<C-p>"] = cmp.mapping.select_prev_item(),
+--           ["<C-n>"] = cmp.mapping.select_next_item(),
+--           ["<C-e>"] = cmp.mapping.abort(),
+--           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+--           ['<C-f>'] = cmp.mapping.scroll_docs(4),
+--           ['<C-Space>'] = cmp.mapping.complete(),
+--           ['<C-e>'] = cmp.mapping.abort(),
+--         })
+--       })
+--     end,
+--     event = 'InsertEnter',
+--
+--     -- mapping logic is handled by cmp in opts^
+--     keys = {
+--       '<CR>',
+--       '<C-p>',
+--       '<C-n>',
+--       '<C-e>',
+--       '<C-b>',
+--       '<C-f>',
+--       '<C-Space>',
+--       '<C-e>',
+--     },
+--
+--     dependencies = {
+--       'hrsh7th/cmp-buffer',
+--       'hrsh7th/cmp-nvim-lsp',
+-- --       'onsails/lspkind.nvim',
+--       'hrsh7th/cmp-nvim-lsp-signature-help',
+--       'hrsh7th/cmp-path',
+--       'hrsh7th/cmp-nvim-lua',
+--       'lukas-reineke/cmp-under-comparator',
+-- --       'dcampos/cmp-snippy',
+--       -- 'hrsh7th/cmp-cmdline',
+-- --       'hrsh7th/cmp-nvim-lsp-document-symbol',
+-- --       'doxnit/cmp-luasnip-choice',
+--     },
+-- },
+
+-- 'airblade/vim-gitgutter',
+
+-- General purpose linter
+-- General purpose linter
+-- {
+--   'dense-analysis/ale',
+--   config = true
+-- },
+
+-- Experimental in-line images in vim (not used)
+-- {
+--   'edluffy/hologram.nvim',
+--   lazy = false,
+--   opts = {
+--     auto_display = true,
+--   },
+-- },
+
+-- {
+--   'brenoprata10/nvim-highlight-colors',
+--   init = function()
+--     require('nvim-highlight-colors').setup({})
+--   end
+-- },
+
+-- 'tpope/vim-commentary',
+-- 'tpope/vim-dadbod',
+-- 'tpope/vim-eunuch',
+
+-- {
+--   'dhruvasagar/vim-table-mode',
+--   ft = {'markdown'},
+-- }
+
+return {}
