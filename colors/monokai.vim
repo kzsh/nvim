@@ -1,1 +1,0 @@
-/Users/andrew/.vim/themes/vim-monokai/colors/monokai.vim
