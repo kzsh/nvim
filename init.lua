@@ -5,13 +5,10 @@
 --==========================================================
 -- Startup-only commands
 --==========================================================
-if vim.fn.has("vim_starting") then
-  vim.g.mapleader = " "
-  require ("init/startup")
-  require ('init/lazy')
-end
+vim.g.mapleader = " "
+require('init/startup')
+require('init/lazy')
 
-require('utils')
 require('autocmd')
 require('commands')
 require('cfg/spell')
