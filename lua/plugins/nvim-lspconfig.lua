@@ -2,6 +2,7 @@ return {
   'neovim/nvim-lspconfig',
   lazy = false,
   dependencies = {
+    'saghen/blink.cmp',
     { "mason-org/mason.nvim", opts = {} },
     { "mason-org/mason-lspconfig.nvim",
       -- opts = {
@@ -26,7 +27,11 @@ return {
     },
   },
   config = function()
-    -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    -- blink advertises snippet, resolve and insert-replace support beyond nvim's
+    -- defaults; '*' applies it to every server, including mason-installed ones
+    vim.lsp.config('*', {
+      capabilities = require('blink.cmp').get_lsp_capabilities(),
+    })
 
     -- vim.lsp.config('bashls', {})
     -- vim.lsp.enable('bashls')
