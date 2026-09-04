@@ -23,7 +23,9 @@ return {
       --     "tsserver",
       --   },
       -- },
-      opts = {},
+      opts = {
+        ensure_installed = { "eslint" },
+      },
     },
   },
   config = function()
@@ -56,9 +58,18 @@ return {
     --   capabilities = capabilities
     -- })
 
+    -- rust-analyzer is owned by rustaceanvim; enabling it here would start a
+    -- second client on every rust buffer
 
     vim.lsp.config('ts_ls', {})
     vim.lsp.enable('ts_ls')
+
+    -- 'auto' resolves eslint.config.js per nearest package.json rather than once
+    -- at the workspace root, which is what monorepo packages need
+    vim.lsp.config('eslint', {
+      settings = { workingDirectories = { mode = 'auto' } },
+    })
+    vim.lsp.enable('eslint')
 
     -- vim.lsp.config('cssmodules_ls', {
     --   capabilities = capabilities
