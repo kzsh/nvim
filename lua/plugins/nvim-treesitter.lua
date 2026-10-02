@@ -57,6 +57,7 @@ return {
         "html",
         "javascript",
         "lua",
+        "rust",
         "toml",
         "tsx",
         "typescript",
