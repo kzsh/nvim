@@ -24,7 +24,7 @@ return {
       --   },
       -- },
       opts = {
-        ensure_installed = { "eslint" },
+        ensure_installed = { "eslint", "basedpyright" },
       },
     },
   },
@@ -70,6 +70,9 @@ return {
       settings = { workingDirectories = { mode = 'auto' } },
     })
     vim.lsp.enable('eslint')
+
+    vim.lsp.config('basedpyright', {})
+    vim.lsp.enable('basedpyright')
 
     -- vim.lsp.config('cssmodules_ls', {
     --   capabilities = capabilities
