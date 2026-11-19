@@ -24,7 +24,7 @@ return {
       --   },
       -- },
       opts = {
-        ensure_installed = { "eslint", "basedpyright" },
+        ensure_installed = { "eslint", "basedpyright", "lua_ls" },
       },
     },
   },
@@ -38,12 +38,10 @@ return {
     -- vim.lsp.config('bashls', {})
     -- vim.lsp.enable('bashls')
     --
-    -- vim.lsp.config('lua_ls', {
-    --   diagnostics = {
-    --     globals = { 'vim' }, -- Add 'vim' here
-    --   },
-    -- })
-    -- vim.lsp.enable('lua_ls')
+    -- lazydev.nvim supplies runtime version and library paths for nvim config
+    -- and plugin workspaces, which also makes `vim` a known global
+    vim.lsp.config('lua_ls', {})
+    vim.lsp.enable('lua_ls')
 
     -- vim.lsp.config('clangd', {
     --   format_on_save = false,
